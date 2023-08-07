@@ -18,7 +18,7 @@ const AddCart = ({ id, name, unit_amount, image, quantity }: Props) => {
       onClick={() =>
         cartStore.addProduct({ id, name, unit_amount, image, quantity })
       }
-      className="bg-teal-600 text-white py-2 px-4 font-medium rounded-md"
+      className="bg-teal-600 text-white mt-4 py-2 px-4 font-medium rounded-md"
     >
       Add to Cart
     </button>

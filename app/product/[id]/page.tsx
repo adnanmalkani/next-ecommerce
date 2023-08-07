@@ -16,7 +16,7 @@ interface Props {
 
 const page = async ({ searchParams }: Props) => {
   return (
-    <div className="flex flex-col 2xl:flex-row items-center  justify-between gap-2  text-gray-700">
+    <div className="flex flex-col lg:flex-row items-center  justify-between gap-2  text-gray-700">
       <Image
         src={searchParams.image}
         alt={searchParams.name}

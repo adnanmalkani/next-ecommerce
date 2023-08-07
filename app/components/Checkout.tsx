@@ -3,18 +3,21 @@ import { useState, useEffect } from "react";
 import { useCartStore } from "@/store";
 import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import { useRouter } from "next/navigation";
+import CheckoutForm from "./CheckoutForm";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 );
 
-const Checkout = () => {
+export default function Checkout() {
   const cartStore = useCartStore();
+  const router = useRouter();
   const [clientSecret, setClientSecret] = useState("");
 
   useEffect(() => {
     //Create PaymentIntent as soon as the page loads
-    fetch("/api/payment_intents", {
+    fetch("/api/create-payment-intent", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -23,13 +26,36 @@ const Checkout = () => {
         items: cartStore.cart,
         payment_intent_id: cartStore.paymentIntent,
       }),
-    }).then((res) => {
-      console.log(res);
-      //SET CLIENT SECRET and the payment intent associated with it
-    });
+    })
+      .then((res) => {
+        if (res.status === 403) {
+          return router.push("/api/auth/signin");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setClientSecret(data.paymentIntent.client_secret);
+        cartStore.setPaymentIntent(data.paymentIntent.id);
+      });
   }, []);
 
-  return <div>Checkout</div>;
-};
+  const options: StripeElementsOptions = {
+    clientSecret,
+    appearance: {
+      theme: "stripe",
+      labels: "floating",
+    },
+  };
 
-export default Checkout;
+  return (
+    <div>
+      {clientSecret && (
+        <div>
+          <Elements options={options} stripe={stripePromise}>
+            <CheckoutForm clientSecret={clientSecret} />
+          </Elements>
+        </div>
+      )}
+    </div>
+  );
+}
