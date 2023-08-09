@@ -124,7 +124,7 @@ const Cart = () => {
               exit={{ scale: 0.5, rotateZ: -10, opacity: 0 }}
               className="flex flex-col items-center gap-12 text-2xl font-medium pt-20 opacity-75"
             >
-              <h1>Uhhh ohhh...it's empty 😢</h1>
+              <h1>Uhhh ohhh...its empty 😢</h1>
               <Image src={basket} alt="empty cart" width={200} height={200} />
             </motion.div>
           )}
