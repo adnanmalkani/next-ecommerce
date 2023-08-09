@@ -18,18 +18,19 @@ function Product({ name, image, unit_amount, id, description }: Props) {
         query: { name, image, unit_amount, id, description },
       }}
     >
-      <div className="text-gray-700">
+      <div>
         <Image
           src={image}
           alt={name}
           height={800}
           width={800}
           className="w-full h-96 object-cover rounded-lg"
+          priority={true}
         />
 
         <div className="font-medium py-2">
           <h2>{name}</h2>
-          <h2 className="text-sm text-teal-700">
+          <h2 className="text-sm text-primary">
             {unit_amount ? PriceFormat(unit_amount) : "N/A"}
           </h2>
         </div>

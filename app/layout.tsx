@@ -4,12 +4,18 @@ import Nav from "./components/Nav";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import Hydrate from "./components/Hydrate";
-import { Roboto } from "next/font/google";
+import { Roboto, Lobster_Two } from "next/font/google";
 
 //Define main font
 const roboto = Roboto({
   weight: ["400", "500", "700"],
   subsets: ["latin"],
+  variable: "--font-roboto",
+});
+const lobster = Lobster_Two({
+  weight: ["700"],
+  subsets: ["latin"],
+  variable: "--font-lobster",
 });
 
 export const metadata: Metadata = {
@@ -26,13 +32,11 @@ export default async function RootLayout({
   const session = await getServerSession(authOptions);
 
   return (
-    <html lang="en">
-      <body className={`" mx-4, lg:mx-24 " ${roboto.className}`}>
-        <Hydrate>
-          <Nav user={session?.user} expires={session?.expires as string} />
-          {children}
-        </Hydrate>
-      </body>
+    <html lang="en" className={`${roboto.variable} ${lobster.variable}`}>
+      <Hydrate>
+        <Nav user={session?.user} expires={session?.expires as string} />
+        {children}
+      </Hydrate>
     </html>
   );
 }
